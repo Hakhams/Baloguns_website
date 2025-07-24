@@ -9,7 +9,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
-            <a class="navbar-brand" href="Baloguns.html">Baloguns</a>
+            <a class="navbar-brand" href="index.html">Baloguns</a>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">Home</a>
             </li>
@@ -50,12 +50,15 @@
                         <div class="col-md-2">
                             <img src="${item.img}" class="img-fluid rounded-start" alt="${item.name}">
                         </div>
-                        <div class="col-md-10">
+                        <div class="col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title">${item.name}</h5>
                                 <p class="card-text">${item.desc}</p>
                                 <p class="card-text fw-bold">${item.price}</p>
                             </div>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-center justify-content-center">
+                            <button class="btn btn-danger remove-item-btn" data-name="${item.name}">Remove</button>
                         </div>
                     </div>
                 `;
@@ -65,6 +68,17 @@
             basketTotalDiv.textContent = 'Total: $' + total.toFixed(2);
         }
         document.addEventListener('DOMContentLoaded', loadBasket);
+
+        // Remove item event
+        document.addEventListener('click', function(e) {
+            if (e.target && e.target.classList.contains('remove-item-btn')) {
+                const name = e.target.getAttribute('data-name');
+                let basket = JSON.parse(localStorage.getItem('basket') || '[]');
+                basket = basket.filter(item => item.name !== name);
+                localStorage.setItem('basket', JSON.stringify(basket));
+                loadBasket();
+            }
+        });
 
         // Confetti function
         function popConfetti() {
